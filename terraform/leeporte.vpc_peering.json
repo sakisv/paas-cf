@@ -1,0 +1,9 @@
+[
+    {
+        "peer_name": "lee-test-vpc",
+        "account_id": "595665891067",
+        "vpc_id": "vpc-0d0ab4235d11c2d8f",
+        "subnet_cidr": "192.168.100.0/22"
+    }
+]
+
