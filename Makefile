@@ -386,6 +386,12 @@ show-tenant-comms-addresses:
 	$(eval export ADMIN_ENDPOINT=https://admin.${SYSTEM_DNS_ZONE_NAME}/organisations/)
 	@cd tools/user_emails/ && go build && API_TOKEN=$(API_TOKEN) ADMIN_ENDPOINT=$(ADMIN_ENDPOINT) ./user_emails
 
+.PHONY: show-app-bindings
+show-app-bindings:
+	$(eval export API_TOKEN=`cf oauth-token | cut -f 2 -d ' '`)
+	$(eval export API_ENDPOINT=https://api.${SYSTEM_DNS_ZONE_NAME})
+	@cd tools/apps_and_services/ && go build && API_TOKEN=$(API_TOKEN) API_ENDPOINT=$(API_ENDPOINT) ./apps_and_services
+
 .PHONY: credhub
 credhub:
 	$(if ${MAKEFILE_ENV_TARGET},,$(error Must set MAKEFILE_ENV_TARGET))
