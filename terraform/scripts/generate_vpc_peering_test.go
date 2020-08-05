@@ -75,6 +75,12 @@ var _ = Describe("VPC peering", func() {
 				_, reservedRange, _ := net.ParseCIDR("10.0.0.0/8")
 
 				for _, peer := range peers {
+					if peer["subnet_cidr"] == "10.200.0.0/8" {
+						// This has been an approved exception to the rule and it belongs to GOV.UK.
+						// Changing it at the time, would require tearing the GOV.UK service down and spinning it back
+						// up again.
+						continue
+					}
 					_, net, err := net.ParseCIDR(peer["subnet_cidr"])
 					Expect(err).To(BeNil(), "Config file: %s", filename)
 
