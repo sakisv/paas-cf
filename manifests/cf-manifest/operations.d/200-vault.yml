@@ -93,12 +93,6 @@
                       }
                     ]
                   }
-            tls:
-              - name: vault
-                key: ((vault_tls.private_key))
-                cert: |
-                  ((vault_tls.certificate))
-                  ((vault_tls.ca))
 
       - name: route_registrar
         release: routing
