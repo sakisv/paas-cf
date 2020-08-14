@@ -86,6 +86,20 @@
                 kms_key_id = "b1380431-d93c-4428-85b7-3589deb42e70"
               }
 
+            additional_config:
+              - name: kms.json
+                config: |
+                  {
+                    "seal": [
+                      {
+                        "awskms": [
+                          {
+                            "kms_key_id": "b1380431-d93c-4428-85b7-3589deb42e70"
+                          }
+                        ]
+                      }
+                    ]
+                  }
             tls:
               - name: vault
                 key: ((vault_tls.private_key))
