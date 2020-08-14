@@ -37,6 +37,14 @@
         - vault.service.cf.internal
 
 - type: replace
+  path: /variables/-
+  value:
+    name: vault_admin_password
+    type: password
+    options:
+      length: 64
+
+- type: replace
   path: /instance_groups/-
   value:
     name: vault
