@@ -722,6 +722,7 @@ resources:
     source:
       uri: https://github.com/cloudfoundry/app-autoscaler-release.git
       branch: develop
+      
   - name: vault-service-broker
     type: git
     source:
