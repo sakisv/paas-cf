@@ -4685,10 +4685,16 @@ jobs:
               - |
                 set -eu
 
+<<<<<<< HEAD
                 echo "vault admin password is $VAULT_ADMIN_PASSWORD"
 
                 vault login \
                   -method=userpass \
+=======
+                vault login \
+                  -method=userpass \
+                  -no-print \
+>>>>>>> cf: deploy vault broker in pipeline
                   username=admin \
                   "password=$VAULT_ADMIN_PASSWORD"
 
