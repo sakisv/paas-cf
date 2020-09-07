@@ -1868,6 +1868,8 @@ jobs:
                 CUSTOM_BROKER_ACCEPTANCE_PROMETHEUS_PASSWORD=$(credhub get -q -n "${BOSH_NS}/custom_broker_acceptance_prometheus_password")
                 VAULT_ADMIN_PASSWORD=$(credhub get -q -n "${BOSH_NS}/vault_admin_password")
 
+                echo "VAULT_ADMIN_PASSWORD is ${VAULT_ADMIN_PASSWORD}"
+
 
                 echo 'Setting secrets'
                 TEAM_NS="/concourse/main"
@@ -4683,9 +4685,10 @@ jobs:
               - |
                 set -eu
 
+                echo "vault admin password is $VAULT_ADMIN_PASSWORD"
+
                 vault login \
                   -method=userpass \
-                  -no-print \
                   username=admin \
                   "password=$VAULT_ADMIN_PASSWORD"
 
