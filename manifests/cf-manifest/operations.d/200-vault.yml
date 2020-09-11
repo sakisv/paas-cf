@@ -70,8 +70,14 @@
                 ((vault_tls.ca))
           vault:
             config: |
-              storage "file" {
-                path = "/var/vcap/store/vault/data"
+              # FIXME: set for HA mode
+              # api_addr = "https://vault-leader.my-company.internal"
+
+              storage "dynamodb" {
+                table      = "schmie-vault-data"
+                region     = "eu-west-2"
+                # FIXME: set for HA mode
+                # ha_enabled = "true"
               }
 
               ui = true
