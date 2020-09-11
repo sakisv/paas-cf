@@ -172,7 +172,7 @@
     authorities: oauth.login, cloud_controller.global_auditor,scim.read
     authorized-grant-types: client_credentials,refresh_token,authorization_code
     override: true
-    redirect-uri: https://login.((system_domain))
+    redirect-uri: https://vault.((system_domain))/ui/vault/auth/cloudfoundry/oidc/callback,http://localhost:8250/cloudfoundry/callback
     scope: openid,oauth.approvals,cloud_controller.global_auditor
     secret: ((vault_uaa_client_password))
 
