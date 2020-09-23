@@ -70,14 +70,12 @@
                 ((vault_tls.ca))
           vault:
             config: |
-              # FIXME: set for HA mode
               api_addr = "https://0-vault.((system_domain))"
-
               storage "dynamodb" {
                 table      = "schmie-vault-data"
                 region     = "eu-west-2"
-                # FIXME: set for HA mode
-                ha_enabled = "true"
+                ha_enabled = true
+              }
 
               ui = true
 
