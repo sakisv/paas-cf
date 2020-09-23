@@ -70,8 +70,11 @@
                 ((vault_tls.ca))
           vault:
             config: |
-              storage "file" {
-                path = "/var/vcap/store/vault/data"
+              api_addr = "https://0-vault.((system_domain))"
+              storage "dynamodb" {
+                table      = "schmie-vault-data"
+                region     = "eu-west-2"
+                ha_enabled = true
               }
 
               ui = true
@@ -109,7 +112,7 @@
             routes:
               - name: vault
                 tls_port: 8200
-                prepend_instance_index: false
+                prepend_instance_index: true
                 registration_interval: 10s
                 uris:
                   - vault.((system_domain))
