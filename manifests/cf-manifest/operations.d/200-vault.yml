@@ -1,5 +1,8 @@
 ---
+<<<<<<< HEAD
 # added comment for commit to work
+=======
+>>>>>>> 8923a2add3b478a19b283f223b91ac38fb6caf7c
 
 - type: replace
   path: /releases/-
