@@ -4689,12 +4689,6 @@ jobs:
 
                 vault login \
                   -method=userpass \
-
-
-                echo "vault admin password is $VAULT_ADMIN_PASSWORD"
-
-                vault login \
-                  -method=userpass \
                   username=admin \
                   "password=$VAULT_ADMIN_PASSWORD"
 
