@@ -141,6 +141,11 @@
                     regex: '^[[:xdigit:]]{8}-[[:xdigit:]]{4}-.*$'
                     action: keep
 
+                  - &cf-drop-noise
+                    regex: '(instance_group|loggregator_name|origin|deployment)'
+                    action: labeldrop
+
+
               - job_name: cell
                 scheme: https
 
@@ -165,6 +170,8 @@
                     separator: ;
                     regex: '^[[:xdigit:]]{8}-[[:xdigit:]]{4}-.*$'
                     action: keep
+
+                  - *cf-drop-noise
 
       - name: route_registrar
         release: routing
