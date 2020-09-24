@@ -138,11 +138,6 @@
 
                   - source_labels: [source_id]
                     separator: ;
-                    regex: '^gorouter$'
-                    action: drop
-
-                  - source_labels: [source_id]
-                    separator: ;
                     regex: '^[[:xdigit:]]{8}-[[:xdigit:]]{4}-.*$'
                     action: keep
 
