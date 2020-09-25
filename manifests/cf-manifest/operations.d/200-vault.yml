@@ -47,7 +47,7 @@
   path: /instance_groups/-
   value:
     name: vault
-    instances: 1
+    instances: 3
     azs: [z1, z2, z3]
     networks: [{name: cf}]
 
@@ -70,12 +70,16 @@
                 ((vault_tls.ca))
           vault:
             config: |
-              storage "file" {
-                path = "/var/vcap/store/vault/data"
+              api_addr = "https://vault.((system_domain))"
+
+              storage "dynamodb" {
+                table      = "maxim-vault-data"
+                region     = "eu-west-2"
+                ha_enabled = true
               }
 
               ui = true
-
+              
               listener "tcp" {
                 address = "0.0.0.0:8200"
                 tls_cert_file = "/var/vcap/jobs/vault/tls/vault/cert.pem"
