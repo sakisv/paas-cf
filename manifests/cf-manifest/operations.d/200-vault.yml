@@ -159,6 +159,8 @@
 
                 token=$(echo "$init_output" | grep -o 'Token: .*' | awk '{print $2}')
 
+                echo $token > /var/vcap/jobs/vault/config/root-token.txt
+                
                 $vault login $vault_ca_path_arg $token
                 if [ $? != 0 ]; then
                   echo "Attempted to log in to vault but did not succeed"
