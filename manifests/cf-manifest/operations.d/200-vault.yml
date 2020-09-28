@@ -47,7 +47,7 @@
   path: /instance_groups/-
   value:
     name: vault
-    instances: 1
+    instances: 3
     azs: [z1, z2, z3]
     networks: [{name: cf}]
 
@@ -71,7 +71,7 @@
           vault:
             config: |
               # FIXME: set for HA mode
-              api_addr = "https://0-vault.((system_domain))"
+              api_addr = "https://vault.((system_domain))"
 
               storage "dynamodb" {
                 table      = "schmie-vault-data"
@@ -100,7 +100,7 @@
             routes:
               - name: vault
                 tls_port: 8200
-                prepend_instance_index: true
+                prepend_instance_index: false
                 registration_interval: 10s
                 uris:
                   - vault.((system_domain))
