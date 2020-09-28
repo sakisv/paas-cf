@@ -113,8 +113,8 @@
               vault="/var/vcap/packages/vault/bin/vault"
               vault_ca_path_arg="-ca-path=/var/vcap/jobs/vault/tls/vault/cert.pem"
 
-              for i in $(seq 60); do
-                if [ $i -eq "60" ]; then
+              for i in $(seq 240); do
+                if [ $i -eq "240" ]; then
                   echo "vault not installed after $i attempts...giving up"
                   exit 1
                 fi
@@ -127,8 +127,8 @@
                 sleep 1
               done
 
-              for i in $(seq 60); do
-                if [ $i -eq "60" ]; then
+              for i in $(seq 240); do
+                if [ $i -eq "240" ]; then
                   echo "vault not up after $i attempts...giving up"
                   exit 1
                 fi
@@ -145,7 +145,7 @@
                 echo "Vault not initialized, bootstrapping"
                 init_output=$($vault operator init $vault_ca_path_arg -n 1 -t 1)
 
-                if [ $? != 0]; then
+                if [ $? != 0 ]; then
                   echo "Attempted to init vault but did not succeed"
                   echo "$init_output"
                   exit 1
@@ -154,7 +154,7 @@
                 token=$(echo "$init_output" | grep -o 'Token: .*' | awk '{print $2}')
 
                 echo $token > /var/vcap/jobs/vault/config/root-token.txt
-                
+
                 $vault login $vault_ca_path_arg $token
                 if [ $? != 0 ]; then
                   echo "Attempted to log in to vault but did not succeed"
