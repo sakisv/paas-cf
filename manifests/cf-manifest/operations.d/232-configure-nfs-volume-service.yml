@@ -1,7 +1,2 @@
-- type: replace
-  path: /instance_groups/name=nfs-broker-push/vm_type
-  value: errand
-
-- type: replace
-  path: /instance_groups/name=nfs-broker-push/networks/0/name
-  value: cell
+- type: remove
+  path: /instance_groups/name=nfs-broker-push
