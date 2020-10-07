@@ -4,10 +4,9 @@
   path: /releases/-
   value:
     name: vault
-    # FIXME
-    version: 0.1.1
-    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/vault-0.1.1.tgz
-    sha1: 1ec4d38c327110bf54e1eec25a3f10f162b1ed4c
+    version: 0.0.1602066748
+    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/vault-0.0.1602066748.tgz
+    sha1: f36ddd099871e42dbc231e6bc4dc0565d46e5cde
 
 - type: replace
   path: /variables/-
@@ -98,13 +97,18 @@
         properties:
           route_registrar:
             routes:
-              - name: vault
-                tls_port: 8200
-                prepend_instance_index: false
-                registration_interval: 10s
-                uris:
-                  - vault.((system_domain))
-                server_cert_domain_san: vault.service.cf.internal
+            - health_check:
+                name: vault-healthcheck
+                script_path: "/var/vcap/jobs/vault/bin/dns/healthy"
+              name: vault
+              tls_port: 8200
+              prepend_instance_index: false
+              registration_interval: 10s
+              tags:
+                component: vault
+              uris:
+                - vault.((system_domain))
+              server_cert_domain_san: vault.service.cf.internal
 
       - name: scripting
         release: generic-scripting
