@@ -273,11 +273,3 @@
                 cf_username="andy.hunt+vaultuser@digital.cabinet-office.gov.uk" \
                 cf_password="passwordpassword123" \
                 cf_api_trusted_certificates="((cc_tls.certificate))((cc_tls.ca))"
-
-- type: replace
-  path: /releases/-
-  value:
-    name: "generic-scripting"
-    version: "3"
-    url: "https://bosh.io/d/github.com/orange-cloudfoundry/generic-scripting-release?v=3"
-    sha1: "3198161324c49c670282f5c64b471204a3c510bb"
