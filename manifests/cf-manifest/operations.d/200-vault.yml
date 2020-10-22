@@ -71,6 +71,7 @@
             config: |
               # FIXME: set for HA mode
               api_addr = "https://vault.((system_domain))"
+              cluster_addr = "https://q-s3.vault.cf.schmie.bosh"
 
               storage "dynamodb" {
                 table      = "schmie-vault-data"
@@ -83,6 +84,7 @@
 
               listener "tcp" {
                 address = "0.0.0.0:8200"
+                cluster_address = "0.0.0.0:8201"
                 tls_cert_file = "/var/vcap/jobs/vault/tls/vault/cert.pem"
                 tls_key_file  = "/var/vcap/jobs/vault/tls/vault/key.pem"
                 tls_min_version = "tls12"
