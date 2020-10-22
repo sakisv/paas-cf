@@ -151,7 +151,7 @@
                 echo "Vault not initialized, bootstrapping"
                 init_output=$($vault operator init $vault_ca_path_arg -n 1 -t 1)
 
-                if [ $? != 0]; then
+                if [ $? != 0 ]; then
                   echo "Attempted to init vault but did not succeed"
                   echo "$init_output"
                   exit 1
