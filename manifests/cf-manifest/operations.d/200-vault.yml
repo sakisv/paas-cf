@@ -46,7 +46,7 @@
   path: /instance_groups/-
   value:
     name: vault
-    instances: 3
+    instances: 1
     azs: [z1, z2, z3]
     networks: [{name: cf}]
 
