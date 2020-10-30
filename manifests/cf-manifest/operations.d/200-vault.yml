@@ -92,6 +92,21 @@
               cert: |
                 ((vault_tls.certificate))
                 ((vault_tls.ca))
+            - name: identity_ca_certs
+              cert: |
+                ((diego_instance_identity_ca.certificate))
+                ((diego_instance_identity_ca.ca))
+            - name: api_trusted_certs
+              cert: |
+                ((cc_tls.certificate))
+                ((cc_tls.ca))
+            - name: vault_cc_mtls
+              cert: |
+                ((vault_to_cc_tls.certificate))
+                ((vault_to_cc_tls.ca))
+              key: ((vault_to_cc_tls.private_key))
+
+
           vault:
             config: |
               storage "file" {
@@ -284,10 +299,10 @@
 
               # Configure authentication method
               $vault write $vault_ca_path_arg auth/cf-dev/config \
-                identity_ca_certificates="((diego_instance_identity_ca.certificate))((diego_instance_identity_ca.ca))" \
-                cf_api_addr="https://cloud-controller-ng.service.cf.internal:9023" \
+                identity_ca_certificates=@/var/vcap/jobs/vault/tls/identity_ca_certs/cert.pem \
+                cf_api_addr="https://cloud-controller-ng.service.cf.internal:9024" \
                 cf_username="andy.hunt+vault@digital.cabinet-office.gov.uk" \
                 cf_password="PasswordPassword123" \
-                cf_api_trusted_certificates="((cc_tls.certificate))((cc_tls.ca))" \
-                cf_api_mutual_tls_certificate="((vault_to_cc_tls.certificate))((vault_to_cc_tls.ca))" \
-                cf_api_mutual_tls_key="((vault_to_cc_tls.key))"
+                cf_api_trusted_certificates=@/var/vcap/jobs/vault/tls/api_trusted_certs/cert.pem \
+                cf_api_mutual_tls_certificate=@/var/vcap/jobs/vault/tls/vault_cc_mtls/cert.pem \
+                cf_api_mutual_tls_key=@/var/vcap/jobs/vault/tls/vault_cc_mtls/key.pem
