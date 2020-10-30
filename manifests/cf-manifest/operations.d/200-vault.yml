@@ -5,9 +5,10 @@
   value:
     name: vault
     # FIXME
-    version: 0.1.1
-    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/vault-0.1.1.tgz
-    sha1: 1ec4d38c327110bf54e1eec25a3f10f162b1ed4c
+    # DEV RELEASE
+    version: 0.0.1604320634
+    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/vault-0.0.1604320634.tgz
+    sha1: 5a3f58bcc65aa0e39079a918773358c52aa01c47
 
 - type: replace
   path: /variables/-
@@ -32,6 +33,21 @@
       alternative_names:
         - 127.0.0.1
         - localhost
+        - "*.vault.service.cf.internal"
+        - vault.service.cf.internal
+
+- type: replace
+  path: /variables/-
+  value:
+    name: vault_to_cc_tls
+    type: certificate
+    options:
+      ca: service_cf_internal_ca
+      common_name: vault
+      extended_key_usage:
+        - client_auth
+        - server_auth
+      alternative_names:
         - "*.vault.service.cf.internal"
         - vault.service.cf.internal
 
@@ -261,15 +277,17 @@
                 password="((vault_admin_password))"
 
               # If CF instance identity authentication is not enabled
-              if ! $vault auth list $vault_ca_path_arg | grep -q "cf/"; then
+              if ! $vault auth list $vault_ca_path_arg | grep -q "cf-dev/"; then
                 # Enable it
-                $vault auth enable $vault_ca_path_arg cf;
+                $vault auth enable $vault_ca_path_arg -path=cf-dev -plugin-name=paas-vault-plugin-auth-cf;
               fi
 
               # Configure authentication method
-              $vault write $vault_ca_path_arg auth/cf/config \
+              $vault write $vault_ca_path_arg auth/cf-dev/config \
                 identity_ca_certificates="((diego_instance_identity_ca.certificate))((diego_instance_identity_ca.ca))" \
-                cf_api_addr="http://cloud-controller-ng.service.cf.internal:9022" \
+                cf_api_addr="https://cloud-controller-ng.service.cf.internal:9023" \
                 cf_username="andy.hunt+vault@digital.cabinet-office.gov.uk" \
                 cf_password="PasswordPassword123" \
-                cf_api_trusted_certificates="((cc_tls.certificate))((cc_tls.ca))"
+                cf_api_trusted_certificates="((cc_tls.certificate))((cc_tls.ca))" \
+                cf_api_mutual_tls_certificate="((vault_to_cc_tls.certificate))((vault_to_cc_tls.ca))" \
+                cf_api_mutual_tls_key="((vault_to_cc_tls.key))"
