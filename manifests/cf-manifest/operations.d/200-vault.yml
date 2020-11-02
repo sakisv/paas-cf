@@ -6,9 +6,9 @@
     name: vault
     # FIXME
     # DEV RELEASE
-    version: 0.0.1604320634
-    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/vault-0.0.1604320634.tgz
-    sha1: 5a3f58bcc65aa0e39079a918773358c52aa01c47
+    version: 0.0.1604584842
+    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/vault-0.0.1604584842.tgz
+    sha1: d74a0dd69b879d36d1c325532680ecc0f5b378ba
 
 - type: replace
   path: /variables/-
