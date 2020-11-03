@@ -291,6 +291,12 @@
                 username=admin \
                 password="((vault_admin_password))"
 
+              # Register the plugin
+              $vault plugin register $vault_ca_path_arg \
+                -sha256="$(shasum -a 256 /var/vcap/packages/vault/plugins/paas-vault-plugin-auth-cf | cut -d' ' -f1)" \
+                auth \
+                paas-vault-plugin-auth-cf
+
               # If CF instance identity authentication is not enabled
               if ! $vault auth list $vault_ca_path_arg | grep -q "cf-dev/"; then
                 # Enable it
