@@ -1,5 +1,4 @@
 ---
-
 - type: replace
   path: /releases/-
   value:
@@ -18,6 +17,13 @@
     options:
       is_ca: true
       common_name: vaultCA
+
+# Golang requires that the certificate presented for mTLS does not
+# rely on a common name alone.
+- type: replace
+  path: /variables/name=cc_tls/options/alternative_names?
+  value:
+    - cloud-controller-ng.service.cf.internal
 
 - type: replace
   path: /variables/-
