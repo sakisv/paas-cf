@@ -6,9 +6,9 @@
     name: vault
     # FIXME
     # DEV RELEASE
-    version: 0.0.1604584842
-    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/vault-0.0.1604584842.tgz
-    sha1: d74a0dd69b879d36d1c325532680ecc0f5b378ba
+    version: 0.0.1604673227
+    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/vault-0.0.1604673227.tgz
+    sha1: 414227293ea3de1183517c45906fa97d07863196
 
 - type: replace
   path: /variables/-
@@ -108,6 +108,7 @@
 
 
           vault:
+            ca_cert_path: /var/vcap/jobs/vault/tls/vault/cert.pem
             config: |
               storage "file" {
                 path = "/var/vcap/store/vault/data"
@@ -184,7 +185,7 @@
                 echo "Vault not initialized, bootstrapping"
                 init_output=$($vault operator init $vault_ca_path_arg -n 1 -t 1)
 
-                if [ $? != 0]; then
+                if [ $? != 0 ]; then
                   echo "Attempted to init vault but did not succeed"
                   echo "$init_output"
                   exit 1
@@ -300,13 +301,13 @@
               # If CF instance identity authentication is not enabled
               if ! $vault auth list $vault_ca_path_arg | grep -q "cf-dev/"; then
                 # Enable it
-                $vault auth enable $vault_ca_path_arg -path=cf-dev -plugin-name=paas-vault-plugin-auth-cf;
+                $vault auth enable $vault_ca_path_arg -path=cf-dev paas-vault-plugin-auth-cf;
               fi
 
               # Configure authentication method
               $vault write $vault_ca_path_arg auth/cf-dev/config \
                 identity_ca_certificates=@/var/vcap/jobs/vault/tls/identity_ca_certs/cert.pem \
-                cf_api_addr="https://cloud-controller-ng.service.cf.internal:9024" \
+                cf_api_addr="https://cloud-controller-ng.service.cf.internal:9023" \
                 cf_username="andy.hunt+vault@digital.cabinet-office.gov.uk" \
                 cf_password="PasswordPassword123" \
                 cf_api_trusted_certificates=@/var/vcap/jobs/vault/tls/api_trusted_certs/cert.pem \
