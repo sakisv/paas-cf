@@ -61,4 +61,5 @@ bosh interpolate \
 | sed "s@loggregator_tls_rlp[.]@/$DEPLOY_ENV/$DEPLOY_ENV/loggregator_tls_rlp.@g" \
 | sed "s@loggregator_ca[.]@/$DEPLOY_ENV/$DEPLOY_ENV/loggregator_ca.@g" \
 | sed "s@loggregator_tls_agent[.]@/$DEPLOY_ENV/$DEPLOY_ENV/loggregator_tls_agent.@g" \
-| sed "s@cf_client_secret@/$DEPLOY_ENV/$DEPLOY_ENV/uaa_clients_app_autoscaler_secret@g"
+| sed "s@cf_client_secret@/$DEPLOY_ENV/$DEPLOY_ENV/uaa_clients_app_autoscaler_secret@g" \
+| sed -e '/- name: routing/,+3d' -e '/- name: loggregator-agent/,+3d'
