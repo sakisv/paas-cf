@@ -3,8 +3,10 @@
 	url = https://github.com/cloudfoundry/cf-deployment
 [submodule "prometheus"]
 	path = manifests/prometheus/upstream
-	url = https://github.com/bosh-prometheus/prometheus-boshrelease
+	url = https://github.com/alphagov/paas-prometheus-boshrelease
 [submodule "app-autoscaler-release"]
 	path = manifests/app-autoscaler/upstream
 	url = https://github.com/cloudfoundry/app-autoscaler-release
 	shallow = true
+[submodule "manifests/prometheus/upstream/"]
+	url = https://github.com/alphagov/paas-prometheus-boshrelease
