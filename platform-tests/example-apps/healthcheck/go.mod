@@ -1,14 +1,12 @@
 module github.com/alphagov/paas-cf/platform-tests/example-apps/healthcheck
 
-go 1.13
+go 1.15
 
 require (
-	github.com/aws/aws-sdk-go v1.16.32
-	github.com/garyburd/redigo v1.1.0
-	github.com/go-sql-driver/mysql v1.3.0
-	github.com/influxdata/influxdb1-client v0.0.0-20190809212627-fc22c7df067e
-	github.com/lib/pq v0.0.0-20170810061220-e42267488fe3
-	github.com/pkg/errors v0.8.0
-	github.com/stretchr/testify v1.6.1 // indirect
-	golang.org/x/net v0.0.0-20200822124328-c89045814202 // indirect
+	github.com/aws/aws-sdk-go v1.35.35
+	github.com/garyburd/redigo v1.6.2
+	github.com/go-sql-driver/mysql v1.5.0
+	github.com/influxdata/influxdb1-client v0.0.0-20200827194710-b269163b24ab
+	github.com/lib/pq v1.8.0
+	github.com/pkg/errors v0.9.1
 )
