@@ -439,31 +439,31 @@ resources:
     type: git
     source:
       uri: https://github.com/alphagov/paas-aiven-broker.git
-      branch: master
-      tag_filter: ((deploy_env_tag_prefix))
-      commit_verification_keys: ((gpg_public_keys))
+      branch: bump-go-version
+      #tag_filter: ((deploy_env_tag_prefix))
+      #commit_verification_keys: ((gpg_public_keys))
 
   - name: paas-billing
     type: git
     source:
       uri: https://github.com/alphagov/paas-billing.git
-      branch: master
-      tag_filter: ((deploy_env_tag_prefix))
-      commit_verification_keys: ((gpg_public_keys))
+      branch: bump-go-version
+      #tag_filter: ((deploy_env_tag_prefix))
+      #commit_verification_keys: ((gpg_public_keys))
 
   - name: paas-accounts
     type: git
     source:
       uri: https://github.com/alphagov/paas-accounts.git
-      branch: master
-      tag_filter: v0.14.0
+      branch: go-bump
+      #tag_filter: v0.14.0
 
   - name: paas-auditor
     type: git
     source:
       uri: https://github.com/alphagov/paas-auditor.git
-      branch: master
-      tag_filter: v0.67.0
+      branch: go-bump
+      #tag_filter: v0.67.0
 
   - name: paas-admin
     type: git
@@ -477,8 +477,8 @@ resources:
     type: git
     source:
       uri: https://github.com/alphagov/paas-prometheus-endpoints.git
-      branch: main
-      tag_filter: v0.10.0
+      branch: go-bump
+      #tag_filter: v0.10.0
 
   - name: prometheus-manifest-pre-vars
     type: s3-iam
