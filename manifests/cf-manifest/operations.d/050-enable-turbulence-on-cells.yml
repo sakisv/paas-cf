@@ -1,0 +1,17 @@
+---
+- type: replace
+  path: /releases/-
+  value:
+    name: turbulence
+    version: 0.8
+    url: https://bosh.io/d/github.com/cppforlife/turbulence-release?v=0.8
+    sha1: f9e20d7cc421bf5e71c74e397a690b1e660e15c5
+
+- type: replace
+  path: /instance_groups/name=diego-cell/jobs/-
+  value:
+    name: turbulence_agent
+    release: turbulence
+    consumes:
+      api: {from: api, deployment: ((deploy_env))}
+    debug: true
