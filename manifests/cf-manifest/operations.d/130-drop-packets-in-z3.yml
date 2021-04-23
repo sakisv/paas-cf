@@ -1,0 +1,64 @@
+# Uses IP Tables rules to drop a percentage of all packets, on all core
+# Cloud Foundry components to simulate a flaky network.
+#
+# Rules are only applied in Zone 3
+#
+# Bosh and Concourse IPs are explicitly excluded, so that deployments will work seamlessly.
+# Rules are based on the rules described here:
+# https://askubuntu.com/questions/983006/how-to-make-a-network-interface-drop-a-defined-percentage-of-packets
+---
+- type: replace
+  path: /instance_groups/name=api/jobs/-
+  value: &job-definition
+    name: scripting
+    release: generic-scripting
+    properties:
+      scripting:
+        post-start-script: |
+          # Use the AWS instance metadata endpoint to find out which AZ we're in
+          if [[ "$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)" = "eu-west-1c" ]]; then
+            # Allow incoming from Infra subnets (Bosh, Concourse)
+            iptables -A INPUT -s 10.0.0.0/24 -j ACCEPT
+
+            # Allow incoming from the loopback interface
+            iptables -A INPUT -i lo -j ACCEPT
+
+            # Drop 5% incoming from everywhere
+            iptables -A INPUT -m statistic --mode random --probability 0.05 -j DROP
+          fi
+
+- type: replace
+  path: /instance_groups/name=cc-worker/jobs/-
+  value: *job-definition
+
+- type: replace
+  path: /instance_groups/name=diego-api/jobs/-
+  value: *job-definition
+
+- type: replace
+  path: /instance_groups/name=diego-cell/jobs/-
+  value: *job-definition
+
+- type: replace
+  path: /instance_groups/name=doppler/jobs/-
+  value: *job-definition
+
+- type: replace
+  path: /instance_groups/name=log-api/jobs/-
+  value: *job-definition
+
+- type: replace
+  path: /instance_groups/name=nats/jobs/-
+  value: *job-definition
+
+- type: replace
+  path: /instance_groups/name=router/jobs/-
+  value: *job-definition
+
+- type: replace
+  path: /instance_groups/name=scheduler/jobs/-
+  value: *job-definition
+
+- type: replace
+  path: /instance_groups/name=uaa/jobs/-
+  value: *job-definition
