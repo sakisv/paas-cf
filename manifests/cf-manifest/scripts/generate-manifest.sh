@@ -49,6 +49,12 @@ manifest_without_isolation_segments="$(
 # Now we have a generated manifest, we can add our isolation segments
 manifest_with_isolation_segments="${manifest_without_isolation_segments}"
 for isolation_segment_definition in "${ENV_SPECIFIC_ISOLATION_SEGMENTS_DIR}"/*.yml; do
+  # If there are no .yml files in the directory, Bash will iterate over the path including the wildcard.
+  # We should skip the loop in that case.
+  if [[ "${isolation_segment_definition}" = "${ENV_SPECIFIC_ISOLATION_SEGMENTS_DIR}/*.yml" ]]; then
+    echo "skipping isolating segments because none defined" >&2;
+    break;
+  fi
   diego_cell_base="$(
     bosh interpolate --path /instance_groups/name=diego-cell - <<< "${manifest_without_isolation_segments}"
   )"
