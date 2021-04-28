@@ -1851,6 +1851,35 @@ jobs:
 
                 bosh -n deploy --fix --recreate cf-manifest/cf-manifest.yml
 
+      - task: deploy-ip-tables-rules
+        tags: [colocated-with-web]
+        config:
+          platform: linux
+          image_resource: *gov-paas-bosh-cli-v2-image-resource
+          inputs:
+            - name: paas-cf
+            - name: cf-manifest
+          params:
+            BOSH_ENVIRONMENT: ((bosh_fqdn))
+            BOSH_CA_CERT: ((bosh-ca-cert))
+            BOSH_DEPLOYMENT: ((deploy_env))
+            BOSH_CLIENT_SECRET: ((bosh-client-secret))
+          run:
+            path: sh
+            args:
+              - -e
+              - -c
+              - |
+                BOSH_CLIENT='admin'
+                export BOSH_CLIENT
+
+                bosh interpolate \
+                  -o paas-cf/manifests/cf-manifest/operations/drop-packets-in-z3.yml \
+                  cf-manifest/cf-manifest.yml \
+                > ip-tables-manifest.yml
+
+                bosh -n deploy --fix --recreate ip-tables-manifest.yml
+
       - task: copy-cf-secrets-to-concourse-credhub-ns
         tags: [colocated-with-web]
         config:
