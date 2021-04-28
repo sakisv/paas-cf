@@ -1849,7 +1849,7 @@ jobs:
                 BOSH_CLIENT='admin'
                 export BOSH_CLIENT
 
-                bosh -n deploy --fix cf-manifest/cf-manifest.yml
+                bosh -n deploy --fix --recreate cf-manifest/cf-manifest.yml
 
       - task: copy-cf-secrets-to-concourse-credhub-ns
         tags: [colocated-with-web]
