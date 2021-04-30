@@ -24,7 +24,7 @@
             iptables -A INPUT -i lo -j ACCEPT
 
             # Drop 5% incoming from everywhere
-            iptables -A INPUT -m statistic --mode random --probability 0.20 -j DROP
+            iptables -A INPUT -m statistic --mode random --probability 0.50 -j DROP
           fi
 
 - type: replace
