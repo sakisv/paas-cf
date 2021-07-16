@@ -595,8 +595,7 @@ resources:
     type: git
     source:
       uri: https://github.com/alphagov/paas-billing.git
-      branch: main
-      tag_filter: ((deploy_env_tag_prefix))
+      branch: billing_events_to_resources_table
       commit_verification_keys: ((gpg_public_keys))
 
   - name: paas-accounts
