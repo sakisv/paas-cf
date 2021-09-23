@@ -629,8 +629,7 @@ resources:
     type: git
     source:
       uri: https://github.com/alphagov/paas-accounts.git
-      branch: main
-      tag_filter: v0.16.0
+      branch: ris-bump-golang-1.16
 
   - name: paas-auditor
     type: git
