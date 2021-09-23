@@ -649,8 +649,7 @@ resources:
     type: git
     source:
       uri: https://github.com/alphagov/paas-prometheus-endpoints.git
-      branch: main
-      tag_filter: v0.14.0
+      branch: ris-bump-golang-1.16
 
   - name: prometheus-manifest-pre-vars
     type: s3-iam
