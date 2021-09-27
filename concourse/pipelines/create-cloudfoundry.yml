@@ -1279,6 +1279,7 @@ jobs:
             TF_VAR_system_dns_zone_name: ((system_dns_zone_name))
             TF_VAR_apps_dns_zone_name: ((apps_dns_zone_name))
             AWS_DEFAULT_REGION: ((aws_region))
+            ENV_VARS_FILE: paas-cf/terraform/cloudfoundry/env-specific/((env_specific_bosh_vars_file))
           run:
             path: sh
             args:
@@ -1289,6 +1290,8 @@ jobs:
                 . terraform-variables/concourse.tfvars.sh
                 . terraform-variables/cf-secrets.tfvars.sh
 
+                export ENV_VARS_FILE=$(echo "$ENV_VARS_FILE" | cut -f 1 -d '.')
+
                 cp cf-tfstate/cf.tfstate updated-tfstate/cf.tfstate
 
                 terraform init paas-cf/terraform/cloudfoundry
@@ -1298,7 +1301,8 @@ jobs:
                 terraform apply \
                   -auto-approve=true \
                   -var-file="paas-cf/terraform/((aws_account)).tfvars" \
-                  -var-file="paas-cf/terraform/cloudfoundry/((aws_account)).tfvars" \
+                  -var-file="paas-cf/terraform/cloudfoundry/account-specific/((aws_account)).tfvars" \
+                  -var-file="${ENV_VARS_FILE}.tfvars" \
                   -var-file="paas-cf/terraform/((aws_region)).tfvars" \
                   -state=updated-tfstate/cf.tfstate \
                   paas-cf/terraform/cloudfoundry
@@ -1476,7 +1480,7 @@ jobs:
                 terraform apply \
                   -auto-approve=true \
                   -var-file="paas-cf/terraform/((aws_account)).tfvars" \
-                  -var-file="paas-cf/terraform/cloudfoundry/((aws_account)).tfvars" \
+                  -var-file="paas-cf/terraform/cloudfoundry/account-specific/((aws_account)).tfvars" \
                   -var-file="paas-cf/terraform/((aws_region)).tfvars" \
                   -state=updated-tfstate/psn.tfstate \
                   paas-cf/terraform/psn
