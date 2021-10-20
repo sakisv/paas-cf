@@ -57,7 +57,7 @@ resource "aws_db_instance" "cf" {
 
   allow_major_version_upgrade = false
   auto_minor_version_upgrade  = false
-  apply_immediately           = false
+  apply_immediately           = true
 
   tags = {
     Name       = "${var.env}-cf"

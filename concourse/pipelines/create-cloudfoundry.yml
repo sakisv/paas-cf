@@ -1304,6 +1304,10 @@ jobs:
 
                 sh paas-cf/terraform/./update-terraform-providers.sh updated-tfstate/cf.tfstate
 
+                echo "--->"
+                cat paas-cf/terraform/cloudfoundry/((aws_account)).tfvars
+                echo "<---"
+
                 terraform apply \
                   -auto-approve=true \
                   -var-file="paas-cf/terraform/((aws_account)).tfvars" \
