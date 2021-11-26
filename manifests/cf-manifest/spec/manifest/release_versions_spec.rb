@@ -113,7 +113,7 @@ RSpec.describe "release versions" do
     upstream_version = Gem::Version.new(cf_manifest_version.gsub(/^v/, "").gsub(/\.0$/, ""))
 
     if cf_acceptance_tests_resource["source"]["branch"] == "master"
-      expect(upstream_version).to be == Gem::Version.new("11.0"), "there was no release of github.com/cloudfoundry/cf-acceptance-tests for cf-deployment v11.0. remove this erroring line and uncomment the below if they fix this for v12"
+      expect([Gem::Version.new("11.0"), Gem::Version.new("17.0")]).to include(upstream_version), "there was no release of github.com/cloudfoundry/cf-acceptance-tests for cf-deployment #{upstream_version}. remove this erroring line and uncomment the below if they fix this for the next one"
     else
       paas_version = Gem::Version.new(cf_acceptance_tests_resource["source"]["branch"].gsub(/^cf/, ""))
       if !pinned_cf_acceptance_tests_version.nil?
