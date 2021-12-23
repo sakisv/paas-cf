@@ -1,0 +1,5 @@
+---
+
+- type: replace
+  path: /instance_groups/name=doppler/jobs/name=doppler/properties?/doppler?/egress_buffer_size?
+  value: 2000
