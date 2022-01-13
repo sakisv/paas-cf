@@ -57,4 +57,4 @@ run:
       cd paas-cf/manifests/app-autoscaler/upstream
       source .envrc
       cd src/acceptance
-      ./bin/test_default -p -nodes=8
+      ./bin/test_default -p -nodes=1
