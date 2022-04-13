@@ -476,7 +476,7 @@ logit-filters:
 		-v $(CURDIR):/mnt:ro \
 		-v $(CURDIR)/config/logit/output:/output:rw \
 		-w /mnt \
-		jruby:9.2-alpine ./scripts/generate_logit_filters.sh $(LOGSEARCH_BOSHRELEASE_TAG) $(LOGSEARCH_FOR_CLOUDFOUNDRY_TAG)
+		jruby:9.2 ./scripts/generate_logit_filters.sh $(LOGSEARCH_BOSHRELEASE_TAG) $(LOGSEARCH_FOR_CLOUDFOUNDRY_TAG)
 	@echo "updated $(CURDIR)/config/logit/output/generated_logit_filters.conf"
 
 .PHONY: show-tenant-comms-addresses
