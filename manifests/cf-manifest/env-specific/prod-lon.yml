@@ -14,5 +14,5 @@ cc_staging_timeout_in_seconds: 2700
 cc_maximum_health_check_timeout_in_seconds: 300
 paas_region_name: london
 
-prometheus_disk_size: 750GB
-prometheus_retention_size: 700GB
+prometheus_disk_size: 1000GB
+prometheus_retention_size: 900GB
