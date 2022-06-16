@@ -23,6 +23,11 @@ for i in "${PAAS_CF_DIR}"/manifests/prometheus/alerts.d/*.yml; do
   alerts_opsfile_args+="-o $i "
 done
 
+recording_rules_opfiles_args=""
+for i in "${PAAS_CF_DIR}"/manifests/prometheus/recording-rules.d/*.yml; do
+  recording_rules_opfiles_args+="-o $i "
+done
+
 if [ "${ENABLE_ALERT_NOTIFICATIONS:-}" == "false" ]; then
   opsfile_args+="-o ${PAAS_CF_DIR}/manifests/prometheus/operations/disable-alert-notifications.yml"
 fi
@@ -58,4 +63,5 @@ bosh interpolate \
   --vars-file="${PAAS_CF_DIR}/manifests/cf-manifest/env-specific/${ENV_SPECIFIC_BOSH_VARS_FILE}" \
   ${opsfile_args} \
   ${alerts_opsfile_args} \
+  ${recording_rules_opfiles_args} \
   "${PROM_BOSHRELEASE_DIR}/manifests/prometheus.yml"
