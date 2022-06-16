@@ -1,0 +1,8 @@
+---
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/custom_rules?/-
+  value:
+    name: CFAppCount
+    rules:
+      - record: "cf_app:count"
+        expr: sum(group by(organization_name,space_name,application_name)(cf_application_info{organization_name!~"(AIVENBACC|BACC|ACC|ASATS|SMOKE|CATS).*",state="STARTED"}))

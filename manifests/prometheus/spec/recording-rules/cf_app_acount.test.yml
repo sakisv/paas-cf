@@ -1,0 +1,45 @@
+---
+rule_files:
+  # See alerts_validation_spec.rb for details of how stdin gets set:
+  - ../alerts/fixtures/rules.yml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1h
+    input_series:
+      - series: 'cf_application_info{organization_name="org-1", space_name="space-1", application_name="app-1", application_id="id-1", state="STARTED"}'
+        values: 1x6
+        # This is the same app with a different ID, like a v2 blue-green deploy
+      - series: 'cf_application_info{organization_name="org-1", space_name="space-1", application_name="app-1", application_id="id-2", state="STARTED"}'
+        values: 1x6
+      - series: 'cf_application_info{organization_name="org-1", space_name="space-2", application_name="app-2", application_id="id-1", state="STARTED"}'
+        values: 1x6
+      - series: 'cf_application_info{organization_name="org-2", space_name="space-1", application_name="app-1", application_id="id-1", state="STARTED"}'
+        values: 1x6
+      - series: 'cf_application_info{organization_name="org-3", space_name="space-1", application_name="app-1", application_id="id-1", state="STARTED"}'
+        values: 1x6
+      - series: 'cf_application_info{organization_name="org-4", space_name="space-1", application_name="app-1", application_id="id-1", state="STARTED"}'
+        values: _x3 1x3
+
+    promql_expr_test:
+      # Should count 5 applications in the first hour
+      - expr: "cf_app:count"
+        eval_time: 1h
+        exp_samples:
+          - labels: "cf_app:count"
+            value: 4
+
+      # Should count 6 applications in the fourth hour
+      - expr: "cf_app:count"
+        eval_time: 4h
+        exp_samples:
+          - labels: "cf_app:count"
+            value: 5
+
+      # Should be able to use delta to find the difference over time
+      - expr: "delta(cf_app:count[2h])" # Look back 2 hours
+        eval_time: 4h                   # starting at the 4th hour
+        exp_samples:
+          - labels: ""
+            value: 1
