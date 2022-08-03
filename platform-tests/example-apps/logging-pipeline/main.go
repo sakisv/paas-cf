@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"time"
@@ -20,6 +21,17 @@ func main() {
 
 		log.Printf("Application responded with text: %s", message)
 	})
+
+	go func () {
+		for {
+			fmt.Print("here's a number", rand.Uint64())
+			if rand.Intn(2) != 0 {
+				fmt.Print("\n")
+			} else {
+				fmt.Print(" and ")
+			}
+		}
+	} ()
 
 	err := http.ListenAndServe(addr, nil)
 
