@@ -27,6 +27,7 @@ func main() {
 			fmt.Print("here's a number", rand.Uint64())
 			if rand.Intn(2) != 0 {
 				fmt.Print("\n")
+				time.Sleep(time.Millisecond)
 			} else {
 				fmt.Print(" and ")
 			}
