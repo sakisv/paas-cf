@@ -4,6 +4,7 @@ applications:
    memory: 64M
    disk_quota: 256M
    instances: 2
+   random-route: true
    command: "./bin/logging-pipeline"
    buildpacks: [go_buildpack]
    stack: cflinuxfs3
