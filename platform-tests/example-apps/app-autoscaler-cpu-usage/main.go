@@ -73,10 +73,7 @@ func shouldWePartyAndForHowLong(tNow time.Time, period time.Duration) (bool, tim
 	shouldWe := (tNow.UnixMilli() / int64(period.Milliseconds())) % 2 != 0
 
 	// the time remaining is the period minus the remainder of that division
-	timeRemaining := period - time.Duration(
-		float64(tNow.UnixMilli() % int64(period.Milliseconds()))
-		* float64(time.Millisecond)
-	)
+	timeRemaining := period - time.Duration(float64(tNow.UnixMilli() % int64(period.Milliseconds())) * float64(time.Millisecond))
 
 	return shouldWe, timeRemaining
 }
