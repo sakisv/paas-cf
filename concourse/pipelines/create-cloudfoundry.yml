@@ -3511,39 +3511,39 @@ jobs:
 
                 cf enable-service-access autoscaler
 
-      - task: deploy-app-autoscaler-cpu-usage
-        tags: [colocated-with-web]
-        config:
-          platform: linux
-          image_resource: *cf-cli-image-resource
-          inputs:
-            - name: paas-cf
-          params:
-            SYSTEM_DNS_ZONE_NAME: ((system_dns_zone_name))
-            API_ENDPOINT: ((api_endpoint))
-            CF_ADMIN: ((cf_admin))
-            CF_PASS: ((cf_pass))
-            CF_CLIENT_SECRET: ((cf_client_secret))
-          run:
-            path: sh
-            args:
-              - -e
-              - -u
-              - -c
-              - |
-                cf api "${API_ENDPOINT}"
-                cf auth "${CF_ADMIN}" "${CF_PASS}"
-                cf target -o admin -s healthchecks
+      #- task: deploy-app-autoscaler-cpu-usage
+        #tags: [colocated-with-web]
+        #config:
+          #platform: linux
+          #image_resource: *cf-cli-image-resource
+          #inputs:
+            #- name: paas-cf
+          #params:
+            #SYSTEM_DNS_ZONE_NAME: ((system_dns_zone_name))
+            #API_ENDPOINT: ((api_endpoint))
+            #CF_ADMIN: ((cf_admin))
+            #CF_PASS: ((cf_pass))
+            #CF_CLIENT_SECRET: ((cf_client_secret))
+          #run:
+            #path: sh
+            #args:
+              #- -e
+              #- -u
+              #- -c
+              #- |
+                #cf api "${API_ENDPOINT}"
+                #cf auth "${CF_ADMIN}" "${CF_PASS}"
+                #cf target -o admin -s healthchecks
 
-                cd paas-cf/platform-tests/example-apps/app-autoscaler-cpu-usage
+                #cd paas-cf/platform-tests/example-apps/app-autoscaler-cpu-usage
 
-                if ! cf service scale-app-autoscaler-cpu-usage > /dev/null; then
-                  cf create-service autoscaler autoscaler-free-plan scale-app-autoscaler-cpu-usage
-                fi
+                #if ! cf service scale-app-autoscaler-cpu-usage > /dev/null; then
+                  #cf create-service autoscaler autoscaler-free-plan scale-app-autoscaler-cpu-usage
+                #fi
 
-                cf cancel-deployment app-autoscaler-cpu-usage || true
-                cf push --strategy=rolling app-autoscaler-cpu-usage
-                cf aasp app-autoscaler-cpu-usage policy.json
+                #cf cancel-deployment app-autoscaler-cpu-usage || true
+                #cf push --strategy=rolling app-autoscaler-cpu-usage
+                #cf aasp app-autoscaler-cpu-usage policy.json
 
       - *end-grafana-job-annotation
 
