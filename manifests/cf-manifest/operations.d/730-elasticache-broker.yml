@@ -61,7 +61,7 @@
   path: /releases/-
   value:
     name: elasticache-broker
-    version: 0.1.20
+    version: 0.0.1662652567 
     url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/elasticache-broker-0.0.1662652567.tgz
 
     sha1: 84ee5183f262290501801e909208b4844f58f688
