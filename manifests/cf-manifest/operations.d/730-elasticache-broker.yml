@@ -62,7 +62,8 @@
   value:
     name: elasticache-broker
     version: 0.1.19
-    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/elasticache-broker-0.1.19.tgz
+    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/elasticache-broker-0.0.1662576554.tgz
+
     sha1: 416a17a858a90c2859ba69d59094e050c6d25d58
 
 - type: replace
