@@ -156,6 +156,7 @@ groups:
       - smoke-tests
       - acceptance-tests
       - custom-acceptance-tests
+      - custom-buildpack-tests
       - custom-broker-acceptance-tests
       - app-autoscaler-acceptance-tests
       - bosh-tests
@@ -4625,55 +4626,7 @@ jobs:
               file: paas-cf/concourse/tasks/upload-test-artifacts.yml
               params:
                 TEST_ARTIFACTS_BUCKET: ((test_artifacts_bucket))
-          - task: ensure-buildpacks-exist
-            tags: [colocated-with-web]
-            config:
-              platform: linux
-              image_resource: *cf-cli-image-resource
-              inputs:
-                - name: paas-cf
-                - name: cf-manifest
-              params:
-                CF_ADMIN: admin
-                SYSTEM_DNS_ZONE_NAME: ((system_dns_zone_name))
-                CF_PASS: ((cf_pass))
-              run:
-                path: bash
-                args:
-                  - -c
-                  - |
-                    set -ueo pipefail
 
-                    API_ENDPOINT="https://api.${SYSTEM_DNS_ZONE_NAME}"
-
-                    cf api "${API_ENDPOINT}"
-                    cf auth "${CF_ADMIN}" "${CF_PASS}"
-
-                    echo Expected buildpacks
-                    expected="$(
-                      < paas-cf/config/buildpacks.yml \
-                      ruby -ryaml -e 'puts YAML.load(STDIN.read).fetch("buildpacks").map { |p| p["name"] + " " + p["stack"] + " " + p["filename"] }.sort'
-                    )"
-                    echo "$expected"
-
-                    echo Actual buildpacks
-                    actual="$(
-                      cf curl /v3/buildpacks?per_page=100 \
-                      | jq -r '.resources | map([.name, .stack, .filename] | join(" ")) | join("\n")' \
-                      | sort
-                    )"
-                    echo "$actual"
-
-                    echo Diff
-                    diff <(echo "$actual") <(echo "$expected")
-                    same=$?
-
-                    if [ $same == 0 ]; then
-                      echo Actual is the same as Expected
-                    else
-                      echo Actual differs from Expected
-                      exit 1
-                    fi
           ensure:
             task: remove-temp-user
             tags: [colocated-with-web]
@@ -4736,19 +4689,66 @@ jobs:
               params:
                 TEST_ARTIFACTS_BUCKET: ((test_artifacts_bucket))
 
-
-
-        ensure:
-          task: remove-temp-user
+  - name: custom-buildpack-tests
+    plan:
+      - in_parallel:
+          - get: pipeline-trigger
+            passed: ['acceptance-tests']
+            trigger: true
+          - <<: *get-paas-cf
+            passed: *smoke-tests-resource-passed
+          - get: cf-manifest
+            passed: ['post-deploy']
+      - do:
+        - task: ensure-buildpacks-exist
           tags: [colocated-with-web]
-          file: paas-cf/concourse/tasks/delete_admin.yml
-          timeout: 5m
-          params:
-            DISABLE_ADMIN_USER_CREATION: ((disable_custom_acceptance_tests))
-            API_ENDPOINT: ((api_endpoint))
-            CF_ADMIN: ((cf_admin))
-            CF_PASS: ((cf_pass))
-      - *end-grafana-job-annotation
+          config:
+            platform: linux
+            image_resource: *cf-cli-image-resource
+            inputs:
+              - name: paas-cf
+              - name: cf-manifest
+            params:
+              CF_ADMIN: admin
+              SYSTEM_DNS_ZONE_NAME: ((system_dns_zone_name))
+              CF_PASS: ((cf_pass))
+            run:
+              path: bash
+              args:
+                - -c
+                - |
+                  set -ueo pipefail
+
+                  API_ENDPOINT="https://api.${SYSTEM_DNS_ZONE_NAME}"
+
+                  cf api "${API_ENDPOINT}"
+                  cf auth "${CF_ADMIN}" "${CF_PASS}"
+
+                  echo Expected buildpacks
+                  expected="$(
+                    < paas-cf/config/buildpacks.yml \
+                    ruby -ryaml -e 'puts YAML.load(STDIN.read).fetch("buildpacks").map { |p| p["name"] + " " + p["stack"] + " " + p["filename"] }.sort'
+                  )"
+                  echo "$expected"
+
+                  echo Actual buildpacks
+                  actual="$(
+                    cf curl /v3/buildpacks?per_page=100 \
+                    | jq -r '.resources | map([.name, .stack, .filename] | join(" ")) | join("\n")' \
+                    | sort
+                  )"
+                  echo "$actual"
+
+                  echo Diff
+                  diff <(echo "$actual") <(echo "$expected")
+                  same=$?
+
+                  if [ $same == 0 ]; then
+                    echo Actual is the same as Expected
+                  else
+                    echo Actual differs from Expected
+                    exit 1
+                  fi
 
   - name: custom-broker-acceptance-tests
     plan:
