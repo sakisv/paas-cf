@@ -627,7 +627,7 @@ resources:
     type: git
     source:
       uri: https://github.com/alphagov/paas-billing.git
-      branch: 183324200-db-connection-handling-fix
+      branch: ris-migrations
 
   - name: paas-accounts
     type: git
