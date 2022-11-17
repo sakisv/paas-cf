@@ -108,6 +108,8 @@
     name: "tiny-unencrypted-11"
     description: "5GB Storage, NOT BACKED UP, Dedicated Instance, Max 50 Concurrent Connections. Postgres Version 11. DB Instance Class: db.t3.micro. Free for trial orgs. Costs for billable orgs."
     free: true
+    maintenance_info:
+      version: "11.0.0"
     metadata:
       AdditionalMetadata:
         backups: false
