@@ -1,7 +1,9 @@
 package broker_acceptance_test
 
 import (
+	"encoding/json"
 	"fmt"
+
 	"github.com/cloudfoundry/cf-test-helpers/cf"
 	"github.com/cloudfoundry/cf-test-helpers/generator"
 	. "github.com/onsi/ginkgo/v2"
@@ -49,6 +51,14 @@ var _ = Describe("CDN broker", func() {
 				Expect(cf.Cf("create-domain", orgName, domainName).Wait(testConfig.DefaultTimeoutDuration())).To(Exit(0))
 				Expect(cf.Cf("create-service", serviceName, serviceName, serviceInstanceName, "-c", domainNameList).Wait(testConfig.DefaultTimeoutDuration())).To(Exit(0))
 				pollForCdnServiceCreationCompletion(serviceInstanceName)
+			})
+
+			By("getting service instance params: "+serviceInstanceName, func() {
+				cf_service_params := cf.Cf("service", serviceInstanceName, "--params").Wait(testConfig.DefaultTimeoutDuration())
+				Expect(cf_service_params).To(Exit(0))
+				var serviceParamsDecoded map[string]interface{}
+				err := json.Unmarshal(cf_service_params.Out.Contents(), &serviceParamsDecoded)
+				Expect(err).ToNot(HaveOccurred())
 			})
 
 			By("deleting a standard CDN service", func() {
